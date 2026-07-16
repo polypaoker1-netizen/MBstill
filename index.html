@@ -101,6 +101,40 @@
             border-top: 1px solid var(--border-color);
         }
 
+        .user-profile {
+            padding: 12px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .user-profile:hover {
+            background: var(--hover-bg);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
         .admin-link {
             display: block;
             padding: 12px;
@@ -276,6 +310,12 @@
             padding: 8px 0;
         }
 
+        .message-author {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
         .message-text {
             line-height: 1.6;
             font-size: 15px;
@@ -357,6 +397,118 @@
             display: block;
         }
 
+        /* Profile Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+        }
+
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .emoji-option {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .emoji-option:hover {
+            background: var(--hover-bg);
+        }
+
+        .emoji-option.selected {
+            border-color: var(--primary-color);
+            background: var(--hover-bg);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--sidebar-bg);
+            color: var(--text-primary);
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .sidebar {
@@ -375,6 +527,10 @@
             .suggestions {
                 grid-template-columns: 1fr;
             }
+
+            .emoji-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
         }
     </style>
 </head>
@@ -391,6 +547,13 @@
             
             <div class="chat-history" id="chatHistory">
                 <!-- Chat items will be added here -->
+            </div>
+            
+            <div class="user-profile" onclick="openProfileModal()">
+                <div class="user-avatar" id="userAvatarDisplay">👤</div>
+                <div class="user-info">
+                    <div class="user-name" id="userNameDisplay">Гость</div>
+                </div>
             </div>
             
             <div class="sidebar-footer">
@@ -463,13 +626,43 @@
         </main>
     </div>
 
+    <!-- Profile Modal -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Настройки профиля</h2>
+            
+            <div class="form-group">
+                <label class="form-label">Ваш никнейм</label>
+                <input type="text" class="form-input" id="profileName" placeholder="Введите ник" maxlength="30">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Выберите аватарку</label>
+                <div class="emoji-grid" id="emojiGrid">
+                    <!-- Emojis will be generated by JS -->
+                </div>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeProfileModal()">Отмена</button>
+                <button class="btn btn-primary" onclick="saveProfile()">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let currentChatId = null;
         let chats = JSON.parse(localStorage.getItem('mbstill_chats') || '{}');
-        
+        let userProfile = JSON.parse(localStorage.getItem('mbstill_profile') || '{"name": "Гость", "avatar": "👤"}');
+        let selectedEmoji = userProfile.avatar;
+
+        const emojis = ['😀', '😎', '🤖', '👽', '🦊', '🐱', '🐶', '🦁', '🐼', '🐨', '🐯', '🐸', '🦄', '🐙', '🦋', '🌟', '⚡', '🔥', '💎', '🎮', '🎨', '🎭', '🎪', '🚀', '🛸', '🌈', '🍕', '🎸', '🎺', '🎯'];
+
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
+            loadUserProfile();
             loadChatHistory();
+            generateEmojiGrid();
             
             const messageInput = document.getElementById('messageInput');
             messageInput.addEventListener('input', () => {
@@ -477,12 +670,59 @@
             });
         });
 
+        function loadUserProfile() {
+            document.getElementById('userNameDisplay').textContent = userProfile.name;
+            document.getElementById('userAvatarDisplay').textContent = userProfile.avatar;
+            document.getElementById('profileName').value = userProfile.name;
+            selectedEmoji = userProfile.avatar;
+        }
+
+        function generateEmojiGrid() {
+            const grid = document.getElementById('emojiGrid');
+            grid.innerHTML = emojis.map(emoji => `
+                <div class="emoji-option ${emoji === selectedEmoji ? 'selected' : ''}" 
+                     data-emoji="${emoji}" 
+                     onclick="selectEmoji('${emoji}')">
+                    ${emoji}
+                </div>
+            `).join('');
+        }
+
+        function selectEmoji(emoji) {
+            selectedEmoji = emoji;
+            document.querySelectorAll('.emoji-option').forEach(el => {
+                el.classList.remove('selected');
+                if (el.dataset.emoji === emoji) {
+                    el.classList.add('selected');
+                }
+            });
+        }
+
+        function openProfileModal() {
+            document.getElementById('profileModal').classList.add('active');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.remove('active');
+            loadUserProfile(); // Reset to saved values
+        }
+
+        function saveProfile() {
+            const name = document.getElementById('profileName').value.trim() || 'Гость';
+            userProfile = { name, avatar: selectedEmoji };
+            localStorage.setItem('mbstill_profile', JSON.stringify(userProfile));
+            loadUserProfile();
+            closeProfileModal();
+        }
+
         function startNewChat() {
             currentChatId = Date.now().toString();
             chats[currentChatId] = {
                 id: currentChatId,
                 title: 'Новый чат',
                 messages: [],
+                userId: userProfile.name,
+                userAvatar: userProfile.avatar,
                 createdAt: new Date().toISOString()
             };
             saveChats();
@@ -506,11 +746,16 @@
             container.innerHTML = '';
             
             messages.forEach(msg => {
+                const isUser = msg.role === 'user';
+                const avatar = isUser ? (msg.userAvatar || '👤') : '🤖';
+                const authorName = isUser ? (msg.userName || 'Пользователь') : 'MBstill';
+                
                 const messageDiv = document.createElement('div');
                 messageDiv.className = `message ${msg.role}-message`;
                 messageDiv.innerHTML = `
-                    <div class="message-avatar">${msg.role === 'user' ? '👤' : '🤖'}</div>
+                    <div class="message-avatar">${avatar}</div>
                     <div class="message-content">
+                        <div class="message-author">${escapeHtml(authorName)}</div>
                         <div class="message-text">${escapeHtml(msg.content)}</div>
                         <div class="message-time">${formatTime(msg.timestamp)}</div>
                     </div>
@@ -535,7 +780,9 @@
             const userMessage = {
                 role: 'user',
                 content: content,
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                userName: userProfile.name,
+                userAvatar: userProfile.avatar
             };
             
             chats[currentChatId].messages.push(userMessage);
@@ -563,7 +810,7 @@
             // Show typing indicator
             document.getElementById('typingIndicator').classList.add('visible');
             
-            // Simulate AI response (in real app, this would call your backend)
+            // Simulate AI response
             setTimeout(() => {
                 document.getElementById('typingIndicator').classList.remove('visible');
                 
@@ -580,7 +827,6 @@
         }
 
         function generateAIResponse(userMessage) {
-            // Simple response generator (replace with actual AI API)
             const responses = [
                 "Интересный вопрос! Давайте разберёмся вместе.",
                 "Я понимаю вашу точку зрения. Вот что я думаю...",
@@ -663,7 +909,7 @@
         function showAdminLogin(event) {
             event.preventDefault();
             const password = prompt('Введите пароль администратора:');
-            if (password === 'admin123') { // Change this password!
+            if (password === 'admin123') {
                 window.location.href = 'admin.html';
             } else if (password !== null) {
                 alert('Неверный пароль!');
@@ -680,6 +926,13 @@
             const date = new Date(timestamp);
             return date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
         }
+
+        // Close modal on outside click
+        document.getElementById('profileModal').addEventListener('click', (e) => {
+            if (e.target.id === 'profileModal') {
+                closeProfileModal();
+            }
+        });
     </script>
 </body>
 </html>
