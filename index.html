@@ -19,12 +19,10 @@
             --text-secondary: #6e6e80;
             --border-color: #e5e5e5;
             --hover-bg: #f5f5f5;
-            --user-message-bg: #ffffff;
-            --ai-message-bg: #f7f7f8;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--bg-color);
             color: var(--text-primary);
             height: 100vh;
@@ -36,14 +34,12 @@
             height: 100vh;
         }
 
-        /* Sidebar */
         .sidebar {
             width: 260px;
             background: var(--sidebar-bg);
             border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
-            transition: transform 0.3s;
         }
 
         .sidebar-header {
@@ -62,7 +58,6 @@
             align-items: center;
             gap: 12px;
             font-size: 14px;
-            color: var(--text-primary);
             transition: background 0.2s;
         }
 
@@ -94,11 +89,6 @@
 
         .chat-item.active {
             background: var(--hover-bg);
-        }
-
-        .sidebar-footer {
-            padding: 12px;
-            border-top: 1px solid var(--border-color);
         }
 
         .user-profile {
@@ -135,6 +125,11 @@
             font-size: 14px;
         }
 
+        .sidebar-footer {
+            padding: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+
         .admin-link {
             display: block;
             padding: 12px;
@@ -150,12 +145,10 @@
             color: var(--text-primary);
         }
 
-        /* Main Content */
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
-            position: relative;
         }
 
         .header {
@@ -172,46 +165,19 @@
             color: var(--primary-color);
         }
 
-        .header-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        .icon-btn {
-            width: 36px;
-            height: 36px;
-            border: none;
-            background: transparent;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            transition: background 0.2s;
-        }
-
-        .icon-btn:hover {
-            background: var(--hover-bg);
-        }
-
-        /* Chat Area */
         .chat-area {
             flex: 1;
             overflow-y: auto;
             padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
         }
 
         .welcome-screen {
-            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
+            height: 100%;
             padding: 40px;
         }
 
@@ -224,7 +190,6 @@
             font-size: 32px;
             font-weight: 700;
             margin-bottom: 12px;
-            color: var(--text-primary);
         }
 
         .welcome-subtitle {
@@ -234,48 +199,11 @@
             line-height: 1.6;
         }
 
-        .suggestions {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            max-width: 700px;
-            margin-top: 40px;
-            width: 100%;
-        }
-
-        .suggestion-card {
-            padding: 16px;
-            background: var(--sidebar-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: left;
-        }
-
-        .suggestion-card:hover {
-            background: var(--hover-bg);
-            border-color: var(--primary-color);
-        }
-
-        .suggestion-title {
-            font-weight: 600;
-            margin-bottom: 4px;
-            font-size: 14px;
-        }
-
-        .suggestion-desc {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        /* Messages */
         .message {
             display: flex;
             gap: 16px;
             max-width: 800px;
-            margin: 0 auto;
-            width: 100%;
+            margin: 0 auto 24px;
             animation: fadeIn 0.3s;
         }
 
@@ -307,7 +235,6 @@
 
         .message-content {
             flex: 1;
-            padding: 8px 0;
         }
 
         .message-author {
@@ -327,11 +254,9 @@
             margin-top: 8px;
         }
 
-        /* Input Area */
         .input-area {
             padding: 24px;
             border-top: 1px solid var(--border-color);
-            background: var(--bg-color);
         }
 
         .input-container {
@@ -351,7 +276,6 @@
             font-family: inherit;
             min-height: 56px;
             max-height: 200px;
-            transition: border-color 0.2s;
         }
 
         .message-input:focus {
@@ -369,15 +293,7 @@
             color: white;
             border-radius: 8px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             font-size: 18px;
-            transition: opacity 0.2s;
-        }
-
-        .send-btn:hover {
-            opacity: 0.9;
         }
 
         .send-btn:disabled {
@@ -387,9 +303,8 @@
 
         .typing-indicator {
             display: none;
-            padding: 12px 20px;
+            padding: 12px 24px;
             color: var(--text-secondary);
-            font-size: 14px;
             font-style: italic;
         }
 
@@ -397,7 +312,7 @@
             display: block;
         }
 
-        /* Profile Modal */
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -446,7 +361,6 @@
             border: 1px solid var(--border-color);
             border-radius: 8px;
             font-size: 15px;
-            font-family: inherit;
         }
 
         .emoji-grid {
@@ -466,7 +380,6 @@
             border: 2px solid transparent;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s;
         }
 
         .emoji-option:hover {
@@ -492,7 +405,6 @@
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: opacity 0.2s;
         }
 
         .btn-primary {
@@ -502,42 +414,18 @@
 
         .btn-secondary {
             background: var(--sidebar-bg);
-            color: var(--text-primary);
         }
 
-        .btn:hover {
-            opacity: 0.9;
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .sidebar {
-                position: fixed;
-                left: 0;
-                top: 0;
-                height: 100vh;
-                z-index: 100;
-                transform: translateX(-100%);
-            }
-
-            .sidebar.open {
-                transform: translateX(0);
-            }
-
-            .suggestions {
-                grid-template-columns: 1fr;
-            }
-
-            .emoji-grid {
-                grid-template-columns: repeat(6, 1fr);
-            }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-secondary);
         }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
+        <aside class="sidebar">
             <div class="sidebar-header">
                 <button class="new-chat-btn" onclick="startNewChat()">
                     <span>➕</span>
@@ -546,7 +434,7 @@
             </div>
             
             <div class="chat-history" id="chatHistory">
-                <!-- Chat items will be added here -->
+                <div class="loading">Загрузка...</div>
             </div>
             
             <div class="user-profile" onclick="openProfileModal()">
@@ -563,50 +451,22 @@
             </div>
         </aside>
 
-        <!-- Main Content -->
         <main class="main-content">
             <header class="header">
                 <div class="logo">MBstill</div>
-                <div class="header-actions">
-                    <button class="icon-btn" onclick="toggleSidebar()" title="Меню">☰</button>
-                </div>
             </header>
 
             <div class="chat-area" id="chatArea">
                 <div class="welcome-screen" id="welcomeScreen">
                     <div class="welcome-logo">🤖</div>
                     <h1 class="welcome-title">Добро пожаловать в MBstill</h1>
-                    <p class="welcome-subtitle">
-                        Новая мощная нейросеть, готовая помочь вам с любыми задачами. 
-                        Задавайте вопросы, получайте ответы и исследуйте возможности ИИ.
-                    </p>
-                    
-                    <div class="suggestions">
-                        <div class="suggestion-card" onclick="useSuggestion('Расскажи о себе')">
-                            <div class="suggestion-title">👋 Знакомство</div>
-                            <div class="suggestion-desc">Узнай больше о MBstill</div>
-                        </div>
-                        <div class="suggestion-card" onclick="useSuggestion('Помоги написать код')">
-                            <div class="suggestion-title">💻 Программирование</div>
-                            <div class="suggestion-desc">Помощь с кодом</div>
-                        </div>
-                        <div class="suggestion-card" onclick="useSuggestion('Напиши креативный текст')">
-                            <div class="suggestion-title">✍️ Креатив</div>
-                            <div class="suggestion-desc">Тексты и идеи</div>
-                        </div>
-                        <div class="suggestion-card" onclick="useSuggestion('Объясни сложную тему')">
-                            <div class="suggestion-title">📚 Обучение</div>
-                            <div class="suggestion-desc">Простые объяснения</div>
-                        </div>
-                    </div>
+                    <p class="welcome-subtitle">Новая мощная нейросеть</p>
                 </div>
                 
                 <div id="messagesContainer" style="display: none;"></div>
             </div>
 
-            <div class="typing-indicator" id="typingIndicator">
-                MBstill печатает...
-            </div>
+            <div class="typing-indicator" id="typingIndicator">MBstill печатает...</div>
 
             <div class="input-area">
                 <div class="input-container">
@@ -614,13 +474,9 @@
                         class="message-input" 
                         id="messageInput" 
                         placeholder="Напишите сообщение..."
-                        rows="1"
                         onkeydown="handleKeyDown(event)"
-                        oninput="autoResize(this)"
                     ></textarea>
-                    <button class="send-btn" id="sendBtn" onclick="sendMessage()" disabled>
-                        ➤
-                    </button>
+                    <button class="send-btn" id="sendBtn" onclick="sendMessage()" disabled>➤</button>
                 </div>
             </div>
         </main>
@@ -630,19 +486,14 @@
     <div class="modal" id="profileModal">
         <div class="modal-content">
             <h2 class="modal-title">Настройки профиля</h2>
-            
             <div class="form-group">
                 <label class="form-label">Ваш никнейм</label>
-                <input type="text" class="form-input" id="profileName" placeholder="Введите ник" maxlength="30">
+                <input type="text" class="form-input" id="profileName" maxlength="30">
             </div>
-            
             <div class="form-group">
-                <label class="form-label">Выберите аватарку</label>
-                <div class="emoji-grid" id="emojiGrid">
-                    <!-- Emojis will be generated by JS -->
-                </div>
+                <label class="form-label">Аватарка</label>
+                <div class="emoji-grid" id="emojiGrid"></div>
             </div>
-            
             <div class="modal-actions">
                 <button class="btn btn-secondary" onclick="closeProfileModal()">Отмена</button>
                 <button class="btn btn-primary" onclick="saveProfile()">Сохранить</button>
@@ -651,22 +502,69 @@
     </div>
 
     <script>
+        // ⚠️ ЗАМЕНИТЕ ЭТО НА СВОЙ BIN ID И API KEY!
+        const BIN_ID = 'ВАШ_BIN_ID'; // Получите на jsonbin.io
+        const API_KEY = 'ВАШ_API_KEY'; // Ваш master key
+        
         let currentChatId = null;
-        let chats = JSON.parse(localStorage.getItem('mbstill_chats') || '{}');
-        let userProfile = JSON.parse(localStorage.getItem('mbstill_profile') || '{"name": "Гость", "avatar": "👤"}');
+        let allData = { chats: [], users: {} };
+        let userProfile = { name: 'Гость', avatar: '👤', userId: generateUserId() };
         let selectedEmoji = userProfile.avatar;
 
-        const emojis = ['😀', '😎', '🤖', '👽', '🦊', '🐱', '🐶', '🦁', '🐼', '🐨', '🐯', '🐸', '🦄', '🐙', '🦋', '🌟', '⚡', '🔥', '💎', '🎮', '🎨', '🎭', '🎪', '🚀', '🛸', '🌈', '🍕', '🎸', '🎺', '🎯'];
+        const emojis = ['😀', '😎', '🤖', '👽', '🦊', '🐱', '🐶', '🦁', '🐼', '🐨', '🐯', '🐸', '🦄', '🐙', '🦋', '🌟', '⚡', '🔥', '💎', '🎮'];
 
-        // Initialize
+        function generateUserId() {
+            return 'user_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // Load data from server
+        async function loadData() {
+            try {
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                    headers: {
+                        'X-Master-Key': API_KEY
+                    }
+                });
+                const result = await response.json();
+                allData = result.record || { chats: [], users: {} };
+                
+                // Load user profile
+                if (allData.users[userProfile.userId]) {
+                    userProfile = allData.users[userProfile.userId];
+                } else {
+                    allData.users[userProfile.userId] = userProfile;
+                }
+                
+                loadUserProfile();
+                loadChatHistory();
+                generateEmojiGrid();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('chatHistory').innerHTML = '<div class="loading">Ошибка загрузки</div>';
+            }
+        }
+
+        // Save data to server
+        async function saveData() {
+            try {
+                await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': API_KEY
+                    },
+                    body: JSON.stringify(allData)
+                });
+            } catch (error) {
+                console.error('Error saving data:', error);
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
-            loadUserProfile();
-            loadChatHistory();
-            generateEmojiGrid();
+            loadData();
             
-            const messageInput = document.getElementById('messageInput');
-            messageInput.addEventListener('input', () => {
-                document.getElementById('sendBtn').disabled = !messageInput.value.trim();
+            document.getElementById('messageInput').addEventListener('input', function() {
+                document.getElementById('sendBtn').disabled = !this.value.trim();
             });
         });
 
@@ -681,20 +579,14 @@
             const grid = document.getElementById('emojiGrid');
             grid.innerHTML = emojis.map(emoji => `
                 <div class="emoji-option ${emoji === selectedEmoji ? 'selected' : ''}" 
-                     data-emoji="${emoji}" 
-                     onclick="selectEmoji('${emoji}')">
-                    ${emoji}
-                </div>
+                     onclick="selectEmoji('${emoji}')">${emoji}</div>
             `).join('');
         }
 
         function selectEmoji(emoji) {
             selectedEmoji = emoji;
             document.querySelectorAll('.emoji-option').forEach(el => {
-                el.classList.remove('selected');
-                if (el.dataset.emoji === emoji) {
-                    el.classList.add('selected');
-                }
+                el.classList.toggle('selected', el.textContent === emoji);
             });
         }
 
@@ -704,35 +596,41 @@
 
         function closeProfileModal() {
             document.getElementById('profileModal').classList.remove('active');
-            loadUserProfile(); // Reset to saved values
+            loadUserProfile();
         }
 
-        function saveProfile() {
+        async function saveProfile() {
             const name = document.getElementById('profileName').value.trim() || 'Гость';
-            userProfile = { name, avatar: selectedEmoji };
-            localStorage.setItem('mbstill_profile', JSON.stringify(userProfile));
+            userProfile = { ...userProfile, name, avatar: selectedEmoji };
+            allData.users[userProfile.userId] = userProfile;
+            await saveData();
             loadUserProfile();
             closeProfileModal();
         }
 
-        function startNewChat() {
+        async function startNewChat() {
             currentChatId = Date.now().toString();
-            chats[currentChatId] = {
+            const newChat = {
                 id: currentChatId,
                 title: 'Новый чат',
                 messages: [],
-                userId: userProfile.name,
+                userId: userProfile.userId,
+                userName: userProfile.name,
                 userAvatar: userProfile.avatar,
                 createdAt: new Date().toISOString()
             };
-            saveChats();
+            
+            allData.chats.push(newChat);
+            await saveData();
             loadChatHistory();
             showChat(currentChatId);
         }
 
         function showChat(chatId) {
             currentChatId = chatId;
-            const chat = chats[chatId];
+            const chat = allData.chats.find(c => c.id === chatId);
+            
+            if (!chat) return;
             
             document.getElementById('welcomeScreen').style.display = 'none';
             document.getElementById('messagesContainer').style.display = 'block';
@@ -743,25 +641,22 @@
 
         function renderMessages(messages) {
             const container = document.getElementById('messagesContainer');
-            container.innerHTML = '';
-            
-            messages.forEach(msg => {
+            container.innerHTML = messages.map(msg => {
                 const isUser = msg.role === 'user';
                 const avatar = isUser ? (msg.userAvatar || '👤') : '🤖';
-                const authorName = isUser ? (msg.userName || 'Пользователь') : 'MBstill';
+                const author = isUser ? (msg.userName || 'Пользователь') : 'MBstill';
                 
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${msg.role}-message`;
-                messageDiv.innerHTML = `
-                    <div class="message-avatar">${avatar}</div>
-                    <div class="message-content">
-                        <div class="message-author">${escapeHtml(authorName)}</div>
-                        <div class="message-text">${escapeHtml(msg.content)}</div>
-                        <div class="message-time">${formatTime(msg.timestamp)}</div>
+                return `
+                    <div class="message ${msg.role}-message">
+                        <div class="message-avatar">${avatar}</div>
+                        <div class="message-content">
+                            <div class="message-author">${escapeHtml(author)}</div>
+                            <div class="message-text">${escapeHtml(msg.content)}</div>
+                            <div class="message-time">${formatTime(msg.timestamp)}</div>
+                        </div>
                     </div>
                 `;
-                container.appendChild(messageDiv);
-            });
+            }).join('');
             
             scrollToBottom();
         }
@@ -769,80 +664,55 @@
         async function sendMessage() {
             const input = document.getElementById('messageInput');
             const content = input.value.trim();
-            
             if (!content) return;
             
             if (!currentChatId) {
-                startNewChat();
+                await startNewChat();
             }
             
+            const chat = allData.chats.find(c => c.id === currentChatId);
+            if (!chat) return;
+            
             // Add user message
-            const userMessage = {
+            chat.messages.push({
                 role: 'user',
                 content: content,
                 timestamp: new Date().toISOString(),
                 userName: userProfile.name,
-                userAvatar: userProfile.avatar
-            };
+                userAvatar: userProfile.avatar,
+                userId: userProfile.userId
+            });
             
-            chats[currentChatId].messages.push(userMessage);
-            
-            // Update chat title if first message
-            if (chats[currentChatId].messages.length === 1) {
-                chats[currentChatId].title = content.substring(0, 30) + (content.length > 30 ? '...' : '');
+            if (chat.messages.length === 1) {
+                chat.title = content.substring(0, 30) + (content.length > 30 ? '...' : '');
             }
             
-            saveChats();
+            await saveData();
             loadChatHistory();
             
-            // Show message
             if (document.getElementById('welcomeScreen').style.display !== 'none') {
                 document.getElementById('welcomeScreen').style.display = 'none';
                 document.getElementById('messagesContainer').style.display = 'block';
             }
             
-            renderMessages(chats[currentChatId].messages);
-            
-            // Clear input
+            renderMessages(chat.messages);
             input.value = '';
             document.getElementById('sendBtn').disabled = true;
             
-            // Show typing indicator
-            document.getElementById('typingIndicator').classList.add('visible');
-            
             // Simulate AI response
-            setTimeout(() => {
+            document.getElementById('typingIndicator').classList.add('visible');
+            setTimeout(async () => {
                 document.getElementById('typingIndicator').classList.remove('visible');
                 
-                const aiResponse = {
+                chat.messages.push({
                     role: 'assistant',
-                    content: generateAIResponse(content),
+                    content: 'Привет! Это демо-ответ.',
                     timestamp: new Date().toISOString()
-                };
+                });
                 
-                chats[currentChatId].messages.push(aiResponse);
-                saveChats();
-                renderMessages(chats[currentChatId].messages);
+                await saveData();
+                renderMessages(chat.messages);
             }, 1500);
-        }
-
-        function generateAIResponse(userMessage) {
-            const responses = [
-                "Интересный вопрос! Давайте разберёмся вместе.",
-                "Я понимаю вашу точку зрения. Вот что я думаю...",
-                "Отличная тема для обсуждения! Позвольте поделиться своими мыслями.",
-                "Спасибо за вопрос! Вот мой ответ:",
-                "Давайте рассмотрим это подробнее."
-            ];
-            
-            return responses[Math.floor(Math.random() * responses.length)] + 
-                   "\n\nЭто демонстрационный ответ. В реальной версии здесь будет ответ от нейросети.";
-        }
-
-        function useSuggestion(text) {
-            document.getElementById('messageInput').value = text;
-            document.getElementById('sendBtn').disabled = false;
-            sendMessage();
         }
 
         function handleKeyDown(event) {
@@ -852,63 +722,39 @@
             }
         }
 
-        function autoResize(textarea) {
-            textarea.style.height = 'auto';
-            textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
-        }
-
         function loadChatHistory() {
             const container = document.getElementById('chatHistory');
-            container.innerHTML = '';
+            const userChats = allData.chats
+                .filter(c => c.userId === userProfile.userId)
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             
-            const sortedChats = Object.values(chats).sort((a, b) => 
-                new Date(b.createdAt) - new Date(a.createdAt)
-            );
+            if (userChats.length === 0) {
+                container.innerHTML = '<div style="padding: 12px; color: var(--text-secondary);">Нет чатов</div>';
+                return;
+            }
             
-            sortedChats.forEach(chat => {
-                const chatItem = document.createElement('div');
-                chatItem.className = 'chat-item';
-                chatItem.textContent = chat.title;
-                chatItem.onclick = () => showChat(chat.id);
-                
-                if (chat.id === currentChatId) {
-                    chatItem.classList.add('active');
-                }
-                
-                container.appendChild(chatItem);
-            });
+            container.innerHTML = userChats.map(chat => `
+                <div class="chat-item ${chat.id === currentChatId ? 'active' : ''}" 
+                     onclick="showChat('${chat.id}')">
+                    ${escapeHtml(chat.title)}
+                </div>
+            `).join('');
         }
 
         function updateActiveChat(chatId) {
             document.querySelectorAll('.chat-item').forEach(item => {
                 item.classList.remove('active');
             });
-            
-            const items = document.querySelectorAll('.chat-item');
-            const chat = chats[chatId];
-            items.forEach(item => {
-                if (item.textContent === chat.title) {
-                    item.classList.add('active');
-                }
-            });
-        }
-
-        function saveChats() {
-            localStorage.setItem('mbstill_chats', JSON.stringify(chats));
         }
 
         function scrollToBottom() {
-            const chatArea = document.getElementById('chatArea');
-            chatArea.scrollTop = chatArea.scrollHeight;
-        }
-
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('open');
+            const area = document.getElementById('chatArea');
+            area.scrollTop = area.scrollHeight;
         }
 
         function showAdminLogin(event) {
             event.preventDefault();
-            const password = prompt('Введите пароль администратора:');
+            const password = prompt('Пароль администратора:');
             if (password === 'admin123') {
                 window.location.href = 'admin.html';
             } else if (password !== null) {
@@ -923,15 +769,14 @@
         }
 
         function formatTime(timestamp) {
-            const date = new Date(timestamp);
-            return date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+            return new Date(timestamp).toLocaleTimeString('ru-RU', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
         }
 
-        // Close modal on outside click
         document.getElementById('profileModal').addEventListener('click', (e) => {
-            if (e.target.id === 'profileModal') {
-                closeProfileModal();
-            }
+            if (e.target.id === 'profileModal') closeProfileModal();
         });
     </script>
 </body>
