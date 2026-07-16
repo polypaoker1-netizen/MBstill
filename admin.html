@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBstill - Админ Панель</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #10a37f;
+            --danger-color: #ef4444;
+            --bg-color: #f9fafb;
+            --card-bg: #ffffff;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --border-color: #e5e7eb;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-primary);
+        }
+
+        .admin-header {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .back-btn {
+            padding: 10px 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            opacity: 0.9;
+        }
+
+        .admin-container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 30px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .chat-list {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .chat-item {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .chat-item:hover {
+            background: var(--bg-color);
+        }
+
+        .chat-item:last-child {
+            border-bottom: none;
+        }
+
+        .chat-preview {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 16px;
+        }
+
+        .chat-info {
+            flex: 1;
+        }
+
+        .chat-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .chat-meta {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .chat-messages-count {
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .message-thread {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .thread-message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            max-width: 80%;
+        }
+
+        .thread-message.user {
+            background: #dbeafe;
+            align-self: flex-end;
+        }
+
+        .thread-message.assistant {
+            background: var(--bg-color);
+            align-self: flex-start;
+        }
+
+        .message-role {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--text-secondary);
+        }
+
+        .message-text {
+            line-height: 1.5;
+        }
+
+        .reply-section {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .reply-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 100px;
+            margin-bottom: 12px;
+        }
+
+        .reply-btn {
+            padding: 12px 24px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .reply-btn:hover {
+            opacity: 0.9;
+        }
+
+        .delete-btn {
+            padding: 8px 16px;
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+    <header class="admin-header">
+        <h1 class="admin-title">🔐 Админ Панель MBstill</h1>
+        <a href="index.html" class="back-btn">← Назад к сайту</a>
+    </header>
+
+    <div class="admin-container">
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Всего чатов</div>
+                <div class="stat-value" id="totalChats">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Всего сообщений</div>
+                <div class="stat-value" id="totalMessages">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Активных пользователей</div>
+                <div class="stat-value" id="activeUsers">0</div>
+            </div>
+        </div>
+
+        <!-- Chats Section -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">Все чаты пользователей</h2>
+            </div>
+            <div class="chat-list" id="chatList">
+                <!-- Chats will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Detail Modal -->
+    <div class="modal" id="chatModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Чат</h3>
+                <button class="close-btn" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="message-thread" id="messageThread"></div>
+                
+                <div class="reply-section">
+                    <h4 style="margin-bottom: 12px;">Ответить пользователю:</h4>
+                    <textarea class="reply-textarea" id="replyText" placeholder="Введите ваш ответ..."></textarea>
+                    <button class="reply-btn" onclick="sendReply()">Отправить ответ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentChatId = null;
+        let chats = {};
+
+        // Load data
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+        });
+
+        function loadData() {
+            chats = JSON.parse(localStorage.getItem('mbstill_chats') || '{}');
+            updateStats();
+            renderChatList();
+        }
+
+        function updateStats() {
+            const chatArray = Object.values(chats);
+            const totalChats = chatArray.length;
+            const totalMessages = chatArray.reduce((sum, chat) => sum + chat.messages.length, 0);
+            
+            document.getElementById('totalChats').textContent = totalChats;
+            document.getElementById('totalMessages').textContent = totalMessages;
+            document.getElementById('activeUsers').textContent = totalChats;
+        }
+
+        function renderChatList() {
+            const container = document.getElementById('chatList');
+            const chatArray = Object.values(chats).sort((a, b) => 
+                new Date(b.createdAt) - new Date(a.createdAt)
+            );
+
+            if (chatArray.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">💬</div>
+                        <p>Пока нет чатов</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = chatArray.map(chat => `
+                <div class="chat-item" onclick="openChat('${chat.id}')">
+                    <div class="chat-preview">
+                        <div class="chat-info">
+                            <div class="chat-title">${escapeHtml(chat.title)}</div>
+                            <div class="chat-meta">
+                                Создан: ${formatDate(chat.createdAt)} | 
+                                Последнее сообщение: ${formatDate(chat.messages[chat.messages.length - 1]?.timestamp)}
+                            </div>
+                        </div>
+                        <div class="chat-messages-count">${chat.messages.length} 💬</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openChat(chatId) {
+            currentChatId = chatId;
+            const chat = chats[chatId];
+            
+            document.getElementById('modalTitle').textContent = chat.title;
+            
+            const thread = document.getElementById('messageThread');
+            thread.innerHTML = chat.messages.map(msg => `
+                <div class="thread-message ${msg.role}">
+                    <div class="message-role">${msg.role === 'user' ? '👤 Пользователь' : '🤖 MBstill'}</div>
+                    <div class="message-text">${escapeHtml(msg.content)}</div>
+                    <div style="font-size: 11px; color: #9ca3af; margin-top: 4px;">
+                        ${formatTime(msg.timestamp)}
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('chatModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('chatModal').classList.remove('active');
+            currentChatId = null;
+            document.getElementById('replyText').value = '';
+        }
+
+        function sendReply() {
+            const replyText = document.getElementById('replyText').value.trim();
+            
+            if (!replyText || !currentChatId) return;
+            
+            const reply = {
+                role: 'assistant',
+                content: replyText,
+                timestamp: new Date().toISOString(),
+                isAdmin: true
+            };
+            
+            chats[currentChatId].messages.push(reply);
+            localStorage.setItem('mbstill_chats', JSON.stringify(chats));
+            
+            // Refresh view
+            openChat(currentChatId);
+            document.getElementById('replyText').value = '';
+            
+            // Update stats
+            updateStats();
+            renderChatList();
+            
+            alert('Ответ отправлен!');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function formatDate(timestamp) {
+            if (!timestamp) return 'N/A';
+            const date = new Date(timestamp);
+            return date.toLocaleDateString('ru-RU');
+        }
+
+        function formatTime(timestamp) {
+            if (!timestamp) return '';
+            const date = new Date(timestamp);
+            return date.toLocaleString('ru-RU');
+        }
+
+        // Close modal on outside click
+        document.getElementById('chatModal').addEventListener('click', (e) => {
+            if (e.target.id === 'chatModal') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
